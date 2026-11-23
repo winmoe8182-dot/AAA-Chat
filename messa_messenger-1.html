@@ -231,5 +231,28 @@ $("record").onclick = async () => {
  }
 };
 </script>
+<!-- Emoji Picker -->
+<div id="emojiPicker" style="display:none; padding:10px; background:#252538; border-radius:12px; flex-wrap:wrap; gap:8px;">
+  <button type="button" onclick="addEmoji('😀')">😀</button>
+  <button type="button" onclick="addEmoji('😂')">😂</button>
+  <button type="button" onclick="addEmoji('🥰')">🥰</button>
+  <button type="button" onclick="addEmoji('😍')">😍</button>
+  <button type="button" onclick="addEmoji('😎')">😎</button>
+  <button type="button" onclick="addEmoji('😭')">😭</button>
+  <button type="button" onclick="addEmoji('❤️')">❤️</button>
+  <button type="button" onclick="addEmoji('🔥')">🔥</button>
+  <button type="button" onclick="addEmoji('🎉')">🎉</button>
+  <button type="button" onclick="addEmoji('😘')">😘</button>
+  <button type="button" onclick="addEmoji('👍')">👍</button>
+  <button type="button" onclick="addEmoji('🥳')">🥳</button>
+</div>
+<script>
+function addEmoji(emoji) {
+  const input = document.querySelector('#message');
+  if (!input) return;
+  input.value += emoji;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+</script>
 </body>
 </html>
