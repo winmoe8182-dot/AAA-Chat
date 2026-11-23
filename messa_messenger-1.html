@@ -1,143 +1,235 @@
+
 <!DOCTYPE html>
 <html lang="my">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#635bff">
-<title>Messa — Chat</title>
+<title>AAA Chat</title>
 <style>
-:root{--bg:#f4f5fb;--panel:#fff;--text:#202236;--muted:#85889d;--line:#ececf3;--accent:#635bff;--accent2:#8b85ff;--bubble:#eeeefe;--shadow:0 12px 35px rgba(35,36,75,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans Myanmar",sans-serif;min-height:100vh;display:grid;place-items:center;padding:18px}
-body.dark{--bg:#111321;--panel:#1b1e30;--text:#f4f4fb;--muted:#a0a3b8;--line:#303349;--bubble:#292b48;--shadow:0 12px 35px rgba(0,0,0,.25)}
-.app{width:min(100%,440px);height:min(900px,calc(100vh - 36px));min-height:560px;background:var(--panel);border-radius:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
-.top{padding:17px 18px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
-.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,var(--accent),#a39eff);display:grid;place-items:center;color:white;font-size:22px;font-weight:800}
-.brand{flex:1}.brand strong{font-size:18px;display:block}.brand small{color:var(--muted);font-size:12px}
-.iconbtn{border:0;background:var(--bg);color:var(--text);width:38px;height:38px;border-radius:13px;font-size:18px;cursor:pointer}
-.profile{padding:15px 18px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line)}
-.avatar{width:43px;height:43px;border-radius:50%;background:linear-gradient(135deg,#ffd1a8,#ff9fbc);display:grid;place-items:center;font-size:21px;flex:none}
-.person{flex:1;min-width:0}.person strong{display:block;font-size:14px}.person small{color:var(--muted);font-size:12px}
-.online{display:inline-block;width:7px;height:7px;border-radius:50%;background:#25c98a;margin-right:5px}
-.chat{flex:1;overflow:auto;padding:18px 15px;display:flex;flex-direction:column;gap:12px;background:var(--panel)}
-.day{text-align:center;color:var(--muted);font-size:11px;margin:2px 0 5px}
-.msg{max-width:82%;display:flex;flex-direction:column;gap:4px;align-self:flex-start}
-.msg.mine{align-self:flex-end;align-items:flex-end}
-.bubble{padding:11px 13px;border-radius:17px 17px 17px 5px;background:var(--bg);font-size:14px;line-height:1.55;overflow-wrap:anywhere}
-.mine .bubble{background:var(--accent);color:white;border-radius:17px 17px 5px 17px}
-.meta{font-size:10px;color:var(--muted);padding:0 4px}
-.mine .meta{text-align:right}
-audio{width:min(230px,65vw);height:36px}
-.empty{margin:auto;text-align:center;color:var(--muted);font-size:13px;line-height:1.8;padding:20px}
-.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:5px}
-.composer{padding:12px;border-top:1px solid var(--line);background:var(--panel)}
-.record-status{display:none;font-size:12px;color:#e34e65;padding:0 8px 9px}.record-status.show{display:block}
-.compose-row{display:flex;align-items:flex-end;gap:8px}
-#message{flex:1;min-width:0;resize:none;border:1px solid var(--line);outline:none;border-radius:17px;background:var(--bg);color:var(--text);padding:12px 13px;font:14px inherit;min-height:46px;max-height:110px}
-#message:focus{border-color:var(--accent)}
-.send,.mic{border:0;width:46px;height:46px;border-radius:16px;color:white;background:var(--accent);font-size:19px;cursor:pointer;flex:none}
-.mic{background:var(--bg);color:var(--accent);border:1px solid var(--line)}
-.mic.recording{background:#ffe8ed;color:#d72e50;border-color:#ffc4d0}
-.hint{text-align:center;color:var(--muted);font-size:10px;margin-top:8px}
-.footer{display:flex;justify-content:space-between;align-items:center;padding:0 18px 12px;color:var(--muted);font-size:10px}
-button:active{transform:scale(.97)}button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media(max-width:500px){body{padding:0}.app{height:100dvh;min-height:0;border-radius:0;width:100%;border:0}.top{padding-top:max(14px,env(safe-area-inset-top))}.footer{padding-bottom:max(12px,env(safe-area-inset-bottom))}}
+*{box-sizing:border-box}
+body{margin:0;background:#10121b;color:white;font-family:Arial,sans-serif}
+header{background:#635bff;padding:18px;font-size:22px;font-weight:bold}
+main{max-width:650px;margin:auto;padding:16px}
+input,button{width:100%;padding:13px;margin:6px 0;border:0;border-radius:9px;font-size:15px}
+input{background:#252838;color:white}
+button{background:#635bff;color:white;font-weight:bold}
+button:disabled{opacity:.5}
+#chat{display:none}
+#messages{height:48vh;overflow:auto;background:#1b1e2b;padding:12px;border-radius:12px}
+.msg{background:#303449;padding:10px;margin:8px 0;border-radius:10px;overflow-wrap:anywhere}
+.mine{background:#5149bd}
+small{color:#ccc}
+audio{width:100%;margin-top:8px}
+#status{color:#b9b5ff}
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <div class="logo">M</div>
-    <div class="brand"><strong>Messa</strong><small>စာတိုနဲ့ အသံမက်ဆေ့ချ်</small></div>
-    <button class="iconbtn" id="themeBtn" title="အလင်း/အမှောင်">☾</button>
-    <button class="iconbtn" id="editBtn" title="နာမည်ပြောင်း">✎</button>
-  </header>
-  <section class="profile">
-    <div class="avatar" id="avatar">🙂</div>
-    <div class="person"><strong id="contactName">ကိုယ်ပိုင် Chat</strong><small><span class="online"></span>ဒီစက်ထဲတွင် သိမ်းဆည်းထားသည်</small></div>
-    <button class="iconbtn" id="clearBtn" title="Chat ရှင်းရန်">⌫</button>
-  </section>
-  <main class="chat" id="chat" aria-live="polite">
-    <div class="empty" id="empty"><b>မင်္ဂလာပါ 👋</b>ပထမဆုံး စာတိုလေးတစ်စောင် ပို့ကြည့်ပါ။<br>အသံမက်ဆေ့ချ်လည်း အသံသွင်းနိုင်ပါတယ်။</div>
-  </main>
-  <section class="composer">
-    <div class="record-status" id="recordStatus">● အသံသွင်းနေသည်… ရပ်ရန် မိုက်ခလုတ်ကို ထပ်နှိပ်ပါ</div>
-    <div class="compose-row">
-      <button class="mic" id="micBtn" title="အသံသွင်းရန်">🎙</button>
-      <textarea id="message" rows="1" placeholder="စာတိုရေးပါ…" aria-label="စာတိုရေးရန်"></textarea>
-      <button class="send" id="sendBtn" title="ပို့ရန်">➤</button>
-    </div>
-    <div class="hint">Enter = ပို့ရန် · Shift + Enter = စာကြောင်းအသစ်</div>
-  </section>
-  <div class="footer"><span>မက်ဆေ့ချ်များကို ဒီ browser ထဲမှာ သိမ်းထားသည်</span><span>v1.0</span></div>
-</div>
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const KEY = 'messa_local_messages_v1';
-  let messages = [];
-  try { messages = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { messages = []; }
-  let recorder = null, chunks = [], stream = null, recording = false;
+<header> AAA Chat</header>
+<main>
+<section id="login">
+<h3>အကောင့်ဝင်ရန် / အသစ်ဖွင့်ရန်</h3>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
+<button id="signin">အကောင့်ဝင်မယ်</button>
+<p id="status"></p>
+</section>
 
-  function save(){ try { localStorage.setItem(KEY, JSON.stringify(messages)); } catch(e) { alert('သိမ်းဆည်းရန် နေရာမလုံလောက်ပါ။'); } }
-  function timeNow(){ return new Date().toLocaleTimeString('my-MM',{hour:'2-digit',minute:'2-digit'}); }
-  function render(){
-    const chat = $('chat'); chat.innerHTML = '';
-    if(!messages.length){
-      const e=document.createElement('div');e.className='empty';
-      e.innerHTML='<b>မင်္ဂလာပါ 👋</b>ပထမဆုံး စာတိုလေးတစ်စောင် ပို့ကြည့်ပါ။<br>အသံမက်ဆေ့ချ်လည်း အသံသွင်းနိုင်ပါတယ်။';chat.appendChild(e);return;
+<section id="chat">
+<p id="who"></p>
+<button id="logout">အကောင့်ထွက်မယ်</button>
+<div id="messages"></div>
+<input id="message" placeholder="စာရေးပါ...">
+<button id="send">စာပို့မယ်</button>
+<button id="record"> အသံဖမ်းရန်</button>
+<p id="recordStatus"></p>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+import {
+ getAuth, createUserWithEmailAndPassword,
+ signInWithEmailAndPassword, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+import {
+ getFirestore, collection, addDoc, query,
+ orderBy, onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+import {
+ getStorage, ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+const firebaseConfig = {
+ apiKey: "AIzaSyD86p4SjSiMlc3pVU_8JaN5uq0S0H0qn4Q",
+ authDomain: "aaa-chat-1a5bc.firebaseapp.com",
+ projectId: "aaa-chat-1a5bc",
+ storageBucket: "aaa-chat-1a5bc.firebasestorage.app",
+ messagingSenderId: "1036081337978",
+ appId: "1:1036081337978:web:a33b6f006c5ab14baacdc3",
+ measurementId: "G-373Q016V22"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let stopMessages = null;
+let recorder = null;
+let audioChunks = [];
+
+$("signup").onclick = async () => {
+ try {
+  await createUserWithEmailAndPassword(
+   auth, $("email").value.trim(), $("password").value
+  );
+ } catch(e) { $("status").textContent = e.message; }
+};
+
+$("signin").onclick = async () => {
+ try {
+  await signInWithEmailAndPassword(
+   auth, $("email").value.trim(), $("password").value
+  );
+ } catch(e) { $("status").textContent = e.message; }
+};
+
+$("logout").onclick = () => signOut(auth);
+
+onAuthStateChanged(auth, user => {
+ currentUser = user;
+ $("login").style.display = user ? "none" : "block";
+ $("chat").style.display = user ? "block" : "none";
+
+ if (stopMessages) stopMessages();
+
+ if (user) {
+  $("who").textContent = "ဝင်ထားသောအကောင့်: " + user.email;
+  const q = query(
+   collection(db, "rooms", "main", "messages"),
+   orderBy("createdAt", "asc")
+  );
+
+  stopMessages = onSnapshot(q, snapshot => {
+   $("messages").replaceChildren();
+
+   snapshot.forEach(doc => {
+    const data = doc.data();
+    const item = document.createElement("div");
+    item.className = "msg" +
+      (data.uid === user.uid ? " mine" : "");
+
+    const name = document.createElement("small");
+    name.textContent = data.email || "User";
+    item.appendChild(name);
+
+    if (data.text) {
+     const p = document.createElement("p");
+     p.textContent = data.text;
+     item.appendChild(p);
     }
-    const day=document.createElement('div');day.className='day';day.textContent='မက်ဆေ့ချ်များ';chat.appendChild(day);
-    messages.forEach(m=>{
-      const wrap=document.createElement('div');wrap.className='msg mine';
-      const bubble=document.createElement('div');bubble.className='bubble';
-      if(m.type==='audio'){
-        const audio=document.createElement('audio');audio.controls=true;audio.src=m.data;audio.preload='metadata';bubble.appendChild(audio);
-        const label=document.createElement('div');label.textContent='🎤 အသံမက်ဆေ့ချ်';label.style.fontSize='11px';label.style.marginTop='5px';bubble.appendChild(label);
-      } else { bubble.textContent=m.text; }
-      const meta=document.createElement('div');meta.className='meta';meta.textContent=(m.time||'')+' · ပို့ပြီး';
-      wrap.append(bubble,meta);chat.appendChild(wrap);
-    });
-    chat.scrollTop=chat.scrollHeight;
-  }
-  function sendText(){
-    const field=$('message'),text=field.value.trim();if(!text)return;
-    messages.push({type:'text',text,time:timeNow()});save();field.value='';field.style.height='auto';render();
-  }
-  $('sendBtn').addEventListener('click',sendText);
-  $('message').addEventListener('input',e=>{e.target.style.height='auto';e.target.style.height=Math.min(e.target.scrollHeight,110)+'px';});
-  $('message').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendText();}});
-  $('themeBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');$('themeBtn').textContent=document.body.classList.contains('dark')?'☀':'☾';});
-  $('editBtn').addEventListener('click',()=>{const n=prompt('Chat အမည်ထည့်ပါ', $('contactName').textContent);if(n&&n.trim())$('contactName').textContent=n.trim();});
-  $('clearBtn').addEventListener('click',()=>{if(confirm('ဒီစက်ထဲက Chat မက်ဆေ့ချ်အားလုံးကို ရှင်းမလား။')){messages=[];save();render();}});
-  async function startRecording(){
-    if(!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder){
-      alert('ဒီ browser မှာ အသံသွင်းခြင်း မရနိုင်ပါ။ Chrome နောက်ဆုံးဗားရှင်းကို အသုံးပြုပြီး HTTPS သို့မဟုတ် localhost မှ ဖွင့်ကြည့်ပါ။');return;
+
+    if (data.audioUrl) {
+     const audio = document.createElement("audio");
+     audio.controls = true;
+     audio.src = data.audioUrl;
+     item.appendChild(audio);
     }
-    try{
-      stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      let options={};
-      if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))options.mimeType='audio/webm;codecs=opus';
-      recorder=new MediaRecorder(stream,options);chunks=[];
-      recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
-      recorder.onstop=()=>{
-        const blob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});
-        if(blob.size){
-          const reader=new FileReader();
-          reader.onload=()=>{messages.push({type:'audio',data:reader.result,time:timeNow()});save();render();};
-          reader.readAsDataURL(blob);
-        }
-        stream?.getTracks().forEach(t=>t.stop());stream=null;
-      };
-      recorder.start();recording=true;$('micBtn').classList.add('recording');$('micBtn').textContent='■';$('recordStatus').classList.add('show');
-    }catch(err){alert('မိုက်ခရိုဖုန်း အသုံးပြုခွင့် မရပါ။ Browser permission ကို စစ်ဆေးပေးပါ။');}
+
+    $("messages").appendChild(item);
+   });
+
+   $("messages").scrollTop = $("messages").scrollHeight;
+  }, error => {
+   $("status").textContent = error.message;
+  });
+ }
+});
+
+async function saveMessage(data) {
+ await addDoc(collection(db, "rooms", "main", "messages"), {
+  ...data,
+  uid: currentUser.uid,
+  email: currentUser.email,
+  createdAt: serverTimestamp()
+ });
+}
+
+$("send").onclick = async () => {
+ const text = $("message").value.trim();
+ if (!text || !currentUser) return;
+
+ $("send").disabled = true;
+ try {
+  await saveMessage({text});
+  $("message").value = "";
+ } catch(e) {
+  alert(e.message);
+ }
+ $("send").disabled = false;
+};
+
+$("message").addEventListener("keydown", e => {
+ if (e.key === "Enter") $("send").click();
+});
+
+$("record").onclick = async () => {
+ if (!currentUser) return;
+
+ if (!recorder || recorder.state === "inactive") {
+  try {
+   const stream = await navigator.mediaDevices.getUserMedia({
+    audio: true
+   });
+   audioChunks = [];
+   recorder = new MediaRecorder(stream);
+
+   recorder.ondataavailable = e => {
+    if (e.data.size) audioChunks.push(e.data);
+   };
+
+   recorder.onstop = async () => {
+    stream.getTracks().forEach(t => t.stop());
+    $("recordStatus").textContent = "အသံပို့နေပါတယ်...";
+
+    try {
+     const blob = new Blob(audioChunks, {
+      type: recorder.mimeType || "audio/webm"
+     });
+     const fileRef = ref(
+      storage,
+      "voiceMessages/" + currentUser.uid + "/" +
+      Date.now() + ".webm"
+     );
+     await uploadBytes(fileRef, blob);
+     const url = await getDownloadURL(fileRef);
+     await saveMessage({audioUrl:url});
+     $("recordStatus").textContent = "အသံပို့ပြီးပါပြီ။";
+    } catch(e) {
+     $("recordStatus").textContent = e.message;
+    }
+   };
+
+   recorder.start();
+   $("record").textContent = " အသံဖမ်းခြင်းရပ်မယ်";
+   $("recordStatus").textContent = "အသံဖမ်းနေပါတယ်...";
+  } catch(e) {
+   $("recordStatus").textContent =
+    "Microphone ခွင့်ပြုချက်လိုအပ်ပါတယ်: " + e.message;
   }
-  function stopRecording(){
-    if(recorder&&recording){recorder.stop();recording=false;$('micBtn').classList.remove('recording');$('micBtn').textContent='🎙';$('recordStatus').classList.remove('show');}
-  }
-  $('micBtn').addEventListener('click',()=>recording?stopRecording():startRecording());
-  window.addEventListener('beforeunload',()=>stream?.getTracks().forEach(t=>t.stop()));
-  render();
-})();
+ } else {
+  recorder.stop();
+  $("record").textContent = " အသံဖမ်းရန်";
+ }
+};
 </script>
 </body>
 </html>
