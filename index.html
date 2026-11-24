@@ -110,22 +110,25 @@ body.theme-dark {
   background: #121212;
   color: white;
 }
+#themePanel button {
+  padding: 10px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-body.theme-purple {
-  background: #24143d;
+/* DARK MODE */
+body.theme-dark {
+  background: #121212;
   color: white;
 }
 
-body.theme-pink {
-  background: #3d1830;
-  color: white;
+/* LIGHT MODE */
+body.theme-light {
+  background: #f5f5f5;
+  color: #222222;
 }
-
-body.theme-blue {
-  background: #102b45;
-  color: white;
-}
-
 #login {
   width: calc(100vw - 40px) !important;
   max-width: 560px !important;
@@ -447,12 +450,9 @@ body.theme-blue {
 </button>
 
   <div id="themePanel" style="display:none">
-    <h3>Choose Your Theme</h3>
-    <button type="button" onclick="setTheme('dark')">Dark</button>
-    <button type="button" onclick="setTheme('purple')">Purple</button>
-    <button type="button" onclick="setTheme('pink')">Pink</button>
-    <button type="button" onclick="setTheme('blue')">Blue</button>
-  </div>
+  <h3>Choose Your Theme</h3>
+  <button type="button" onclick="setTheme('dark')">🌙 Dark</button>
+  <button type="button" onclick="setTheme('light')">☀️ Light</button>
 </div>
  
 <div id="login">
@@ -845,21 +845,28 @@ $("send").onclick=async()=>{
 
 $("logout").onclick=()=>signOut(auth);
 function setTheme(theme) {
+  if (theme !== "light" && theme !== "dark") {
+    theme = "dark";
+  }
+
   document.body.classList.remove(
     "theme-dark",
     "theme-purple",
     "theme-pink",
-    "theme-blue"
+    "theme-blue",
+    "theme-light"
   );
 
   document.body.classList.add("theme-" + theme);
   localStorage.setItem("aaaChatTheme", theme);
 }
+
 document.querySelectorAll("[data-theme]").forEach(button => {
   button.onclick = () => setTheme(button.dataset.theme);
 });
 
 const savedTheme = localStorage.getItem("aaaChatTheme");
+setTheme(savedTheme === "light" ? "light" : "dark"); localStorage.getItem("aaaChatTheme");
 if (savedTheme) {
   setTheme(savedTheme);
 }
