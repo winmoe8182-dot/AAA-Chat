@@ -246,6 +246,22 @@ body.theme-blue {
   font-size: 12px;
   text-align: center;
 }
+.login-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.login-links button {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 14px;
+  padding: 8px;
+}
+
 
 </style>
 </head>
@@ -309,16 +325,26 @@ body.theme-blue {
         placeholder="Password">
       <button type="button" id="togglePassword">👁️</button>
     </div>
-    <input id="nickname" type="text"
-      placeholder="Nickname (အကောင့်အသစ်အတွက်)">
-    <button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
-    <button id="signin">Login</button>
-    <button id="reset">Forgot Password?</button>
-  </div>
+    
+<input id="nickname" type="text"
+  placeholder="Nickname (အကောင့်အသစ်အတွက်)">
 
-  <button id="google" class="google">
-    <span>G</span> Continue with Google
-  </button>
+<button id="signin">Login</button>
+</div>
+
+<button id="google" class="google">
+  <span>G</span> Continue with Google
+</button>
+
+<div class="login-links">
+  <button type="button" id="reset">Forgot Password?</button>
+  <span>·</span>
+  <button type="button" id="signup">Sign Up</button>
+</div>
+
+<p id="status"></p>
+</div>
+
 
   <p id="status"></p>
 </div>
