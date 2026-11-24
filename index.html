@@ -111,12 +111,6 @@ $("togglePassword").onclick = () => {
   password.type = visible ? "text" : "password";
   $("togglePassword").textContent = visible ? "🙈" : "👁️";
 };
-$("togglePassword").onclick = () => {
-  const password = $("password");
-  const visible = password.type === "password";
-  password.type = visible ? "text" : "password";
-  $("togglePassword").textContent = visible ? "🙈" : "👁️";
-};
 $("reset").onclick = async () => {
   const email = $("email").value.trim();
 
