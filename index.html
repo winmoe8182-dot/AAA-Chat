@@ -525,10 +525,53 @@ body.theme-light #login input {
 body.theme-light #login input::placeholder {
   color: #777 !important;
 }
+/* AAA CHAT VIDEO BACKGROUND */
+
+.card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  display: none;
+}
+
+body.theme-light #lightVideo {
+  display: block;
+}
+
+body.theme-dark #darkVideo {
+  display: block;
+}
+
+/* Keep login controls above video */
+#login,
+#themeControls {
+  position: relative;
+  z-index: 2;
+}
+
 </style>
 </head>
 <body>
 <div class="card">
+
+<video id="lightVideo" class="login-bg" autoplay muted loop playsinline preload="auto">
+  <source src="https://github.com/winmoe8182-dot/AAA-Chat/raw/refs/heads/main/%E1%80%A1%E1%80%9B%E1%80%99%E1%80%BA%E1%80%B8%E1%80%9C%E1%80%BE%E1%80%90%E1%80%B2%E1%80%B7_%E1%80%8A%E1%80%94%E1%80%B1%E1%80%81%E1%80%84%E1%80%BA%E1%80%B8%E1%80%9C%E1%80%B1%E1%80%B8%E1%80%95%E1%80%B1%E1%80%AB%E1%80%B7%F0%9F%AB%B6_%23Foryou_%23fyp%F0%9F%96%A4__%23baganaungdin__%23bagan_.mp4" type="video/mp4">
+</video>
+
+<video id="darkVideo" class="login-bg" autoplay muted loop playsinline preload="auto">
+  <source src="https://github.com/winmoe8182-dot/AAA-Chat/raw/refs/heads/main/%23scenery_%23beautiful_%23nature_%23relax_%23night_%23moon_%23village___I_like_the_night_in_the_countryside,_the_moon_in_the_sky_is_high,_the_frogs_on_the_ground_a.mp4" type="video/mp4">
+</video>
+
 <div id="themeControls" style="
   position:fixed;
   top:15px;
