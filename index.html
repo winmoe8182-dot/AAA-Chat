@@ -55,9 +55,31 @@ button{
   border-radius: 8px;
   cursor: pointer;
 }
+body.theme-dark {
+  background: #121212;
+  color: white;
+}
+
+body.theme-purple {
+  background: #24143d;
+  color: white;
+}
+
+body.theme-pink {
+  background: #3d1830;
+  color: white;
+}
+
+body.theme-blue {
+  background: #102b45;
+  color: white;
+}
 </style>
 </head>
 <body>
+<button type="button" onclick="document.getElementById('themePanel').style.display='block'">
+  🎨 Choose Theme
+</button>
 <div id="themePanel" style="display:none">
   <h3>Choose Your Theme</h3>
   <button onclick="setTheme('dark')">Dark</button>
@@ -247,6 +269,22 @@ $("send").onclick=async()=>{
 };
 
 $("logout").onclick=()=>signOut(auth);
+function setTheme(theme) {
+  document.body.classList.remove(
+    "theme-dark",
+    "theme-purple",
+    "theme-pink",
+    "theme-blue"
+  );
+
+  document.body.classList.add("theme-" + theme);
+  localStorage.setItem("aaaChatTheme", theme);
+}
+
+const savedTheme = localStorage.getItem("aaaChatTheme");
+if (savedTheme) {
+  setTheme(savedTheme);
+}
 </script>
 </body>
 </html>
