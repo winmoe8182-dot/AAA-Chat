@@ -77,6 +77,7 @@ body.theme-blue {
 </style>
 </head>
 <body>
+<div class="card">
 <div style="width:100%;margin-bottom:12px">
   <button type="button"
     onclick="document.getElementById('themePanel').style.display =
@@ -92,7 +93,6 @@ body.theme-blue {
     <button type="button" onclick="setTheme('blue')">Blue</button>
   </div>
 </div>
-<div class="card">
  <div id="login">
   <h2>AAA Chat</h2>
   
@@ -155,6 +155,11 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=id=>document.getElementById(id);
+$("showThemes").onclick = () => {
+  const panel = $("themePanel");
+  panel.style.display =
+    panel.style.display === "none" ? "block" : "none";
+};
 $("togglePassword").onclick = () => {
   const password = $("password");
   const visible = password.type === "password";
@@ -289,6 +294,9 @@ function setTheme(theme) {
   document.body.classList.add("theme-" + theme);
   localStorage.setItem("aaaChatTheme", theme);
 }
+document.querySelectorAll("[data-theme]").forEach(button => {
+  button.onclick = () => setTheme(button.dataset.theme);
+});
 
 const savedTheme = localStorage.getItem("aaaChatTheme");
 if (savedTheme) {
