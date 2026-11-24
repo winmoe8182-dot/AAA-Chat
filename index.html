@@ -427,32 +427,51 @@ body.theme-light {
 #otpSection > * + * {
   margin-top: 12px !important;
 }
+#themePanel {
+  position:absolute;
+  top:54px;
+  right:0;
+  width:125px;
+  padding:7px;
+  background:#222;
+  border:1px solid #555;
+  border-radius:10px;
+  box-shadow:0 4px 12px #0005;
+}
+
+#themePanel button {
+  display:block;
+  width:100%;
+  margin:4px 0;
+  padding:9px;
+  border-radius:7px;
+  font-size:14px;
+}
 </style>
 </head>
 <body>
 <div class="card">
-<div style="width:100%;display:flex;justify-content:flex-end;margin-bottom:12px">
-  <button type="button" id="showThemes"
-style="
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  padding:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#252536;
-  color:white;
-  border:1px solid #555;
-  font-size:18px;
+<div id="themeControls" style="
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:9999;
 ">
-  🌙
-</button>
+  <button type="button" id="showThemes" style="
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    padding:0;
+    background:#252536;
+    color:white;
+    border:1px solid #555;
+    font-size:23px;
+  ">🌙</button>
 
   <div id="themePanel" style="display:none">
-  <h3>Choose Your Theme</h3>
-  <button type="button" onclick="setTheme('dark')">🌙 Dark</button>
-  <button type="button" onclick="setTheme('light')">☀️ Light</button>
+    <button type="button" onclick="setTheme('dark')">🌙 Dark</button>
+    <button type="button" onclick="setTheme('light')">☀️ Light</button>
+  </div>
 </div>
  
 <div id="login">
