@@ -938,6 +938,8 @@ function setTheme(theme) {
   localStorage.setItem("aaaChatTheme", theme);
 }
 
+window.setTheme = setTheme;
+
 document.querySelectorAll("[data-theme]").forEach(button => {
   button.onclick = () => setTheme(button.dataset.theme);
 });
