@@ -51,6 +51,7 @@ button{
   <input id="nickname" type="text" placeholder="Nickname (အကောင့်အသစ်အတွက်)">
   <button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
   <button id="signin">Email နဲ့ အကောင့်ဝင်မယ်</button>
+<button id="reset">Password မေ့သွားပါသလား?</button>
   <button id="google" class="google">Google နဲ့ ဝင်မယ်</button>
   <p id="status"></p>
  </div>
@@ -70,7 +71,7 @@ import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-
 import {
   getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,
  createUserWithEmailAndPassword,signInWithEmailAndPassword,
- onAuthStateChanged,signOut
+ onAuthStateChanged,signOut,sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
  getFirestore,doc,setDoc,getDoc,collection,addDoc,
@@ -93,6 +94,23 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=id=>document.getElementById(id);
+$("reset").onclick = async () => {
+  const email = $("email").value.trim();
+
+  if (!email) {
+    $("status").textContent = "အရင်ဆုံး Gmail ထည့်ပေးပါ။";
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    $("status").textContent =
+      "Password ပြန်သတ်မှတ်ရန် Email ပို့ပြီးပါပြီ။ Gmail ကို စစ်ဆေးပါ။";
+  } catch (error) {
+    $("status").textContent =
+      "Error: " + error.code;
+  }
+};
 let currentUser=null;
 let stopMessages=null;
 
