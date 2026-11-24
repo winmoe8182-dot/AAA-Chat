@@ -125,6 +125,128 @@ body.theme-blue {
   background: #102b45;
   color: white;
 }
+#login {
+  width: 100%;
+  max-width: 380px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 0;
+  color: white;
+}
+
+#login h2 {
+  text-align: center;
+  font-size: 30px;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #aaa;
+  margin: 0 0 12px;
+}
+
+.login-tabs {
+  display: flex;
+  gap: 8px;
+  background: #222;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.login-tabs button {
+  flex: 1;
+  border: 0;
+  border-radius: 9px;
+  padding: 13px 5px;
+  background: transparent;
+  color: #aaa;
+  font-weight: bold;
+}
+
+.login-tabs button.active {
+  background: linear-gradient(135deg,#635bff,#a45bff);
+  color: white;
+}
+
+#login input {
+  width: 100%;
+  min-height: 48px;
+  padding: 13px;
+  margin: 6px 0;
+  border: 1px solid #444;
+  border-radius: 10px;
+  background: #202020;
+  color: white;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.password-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.password-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.password-row button {
+  width: 48px;
+  min-height: 48px;
+  background: #252525;
+  border: 1px solid #555;
+  border-radius: 10px;
+  color: white;
+}
+
+#emailLogin > button:not(#reset) {
+  width: 100%;
+  min-height: 46px;
+  margin: 5px 0;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#635bff,#a45bff);
+  color: white;
+  font-weight: bold;
+}
+
+#emailLogin #reset {
+  display: block;
+  margin: 8px auto;
+  background: transparent;
+  border: 0;
+  color: #aaa;
+}
+
+#login #google {
+  width: 100%;
+  min-height: 48px;
+  background: #111;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+#google span {
+  color: #4285F4;
+  font-weight: bold;
+  font-size: 19px;
+  margin-right: 8px;
+}
+
+.login-note {
+  color: #aaa;
+  font-size: 12px;
+  text-align: center;
+}
+
 </style>
 </head>
 <body>
@@ -155,20 +277,52 @@ body.theme-blue {
     <button type="button" onclick="setTheme('blue')">Blue</button>
   </div>
 </div>
- <div id="login">
+ 
+<div id="login">
   <h2>AAA Chat</h2>
-  
-<input id="email" type="email" placeholder="Email">
+  <p class="login-subtitle">Welcome Back</p>
 
-<div style="display:flex;align-items:center;gap:6px;width:100%">
-  <input id="password" type="password" placeholder="Password"
-    style="flex:1;min-width:0;width:0;margin:6px 0;padding:12px;box-sizing:border-box">
+  <div class="login-tabs">
+    <button type="button" id="phoneTab" class="active">
+      Phone Login
+    </button>
+    <button type="button" id="emailTab">
+      Email Login
+    </button>
+  </div>
 
-  <button type="button" id="togglePassword"
-    style="width:44px;flex-shrink:0;margin:6px 0;padding:10px 4px;background:transparent;color:white;border:1px solid #555">
-    👁️
+  <div id="phoneLogin">
+    <input id="phoneNumber" type="tel"
+      placeholder="📱 Phone Number">
+    <input id="phonePassword" type="password"
+      placeholder="Password">
+    <p class="login-note">
+      Phone Login ကို နောက်ပိုင်း Firebase OTP စနစ်နဲ့ ချိတ်ဆက်မယ်။
+    </p>
+  </div>
+
+  <div id="emailLogin" style="display:none">
+    <input id="email" type="email"
+      placeholder="✉️ Email">
+    <div class="password-row">
+      <input id="password" type="password"
+        placeholder="Password">
+      <button type="button" id="togglePassword">👁️</button>
+    </div>
+    <input id="nickname" type="text"
+      placeholder="Nickname (အကောင့်အသစ်အတွက်)">
+    <button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
+    <button id="signin">Login</button>
+    <button id="reset">Forgot Password?</button>
+  </div>
+
+  <button id="google" class="google">
+    <span>G</span> Continue with Google
   </button>
+
+  <p id="status"></p>
 </div>
+
 
 <input id="nickname" type="text" placeholder="Nickname (အကောင့်အသစ်အတွက်)">
 <button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
@@ -217,6 +371,23 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=id=>document.getElementById(id);
+
+$("phoneTab").onclick = () => {
+  $("phoneLogin").style.display = "block";
+  $("emailLogin").style.display = "none";
+
+  $("phoneTab").classList.add("active");
+  $("emailTab").classList.remove("active");
+};
+
+$("emailTab").onclick = () => {
+  $("phoneLogin").style.display = "none";
+  $("emailLogin").style.display = "block";
+
+  $("emailTab").classList.add("active");
+  $("phoneTab").classList.remove("active");
+};
+
 $("showThemes").onclick = () => {
   const panel = $("themePanel");
   panel.style.display =
