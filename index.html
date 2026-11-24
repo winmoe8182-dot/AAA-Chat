@@ -68,7 +68,7 @@ button{
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import {
- getAuth,GoogleAuthProvider,signInWithRedirect,
+  getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,
  createUserWithEmailAndPassword,signInWithEmailAndPassword,
  onAuthStateChanged,signOut
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -123,8 +123,14 @@ $("google").onclick=async()=>{
  }catch(e){$("status").textContent=e.message}
 };
 
+getRedirectResult(auth).catch(error=>{
+ $("status").textContent = "Google Login Error: " + error.message;
+});
+
 onAuthStateChanged(auth,async user=>{
  currentUser=user;
+
+
  if(!user){
   $("login").style.display="block";
   $("chat").style.display="none";
