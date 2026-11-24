@@ -47,7 +47,14 @@ button{
  <div id="login">
   <h2>AAA Chat</h2>
   <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+  <div style="position:relative">
+  <input id="password" type="password" placeholder="Password"
+    style="width:100%;padding-right:45px">
+  <button type="button" id="togglePassword"
+    style="position:absolute;right:5px;top:50%;transform:translateY(-50%);border:0;background:transparent;padding:8px">
+    👁️
+  </button>
+</div> type="password" placeholder="Password">
   <input id="nickname" type="text" placeholder="Nickname (အကောင့်အသစ်အတွက်)">
   <button id="signup">အကောင့်အသစ်ဖွင့်မယ်</button>
   <button id="signin">Email နဲ့ အကောင့်ဝင်မယ်</button>
@@ -94,6 +101,12 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=id=>document.getElementById(id);
+$("togglePassword").onclick = () => {
+  const password = $("password");
+  const visible = password.type === "password";
+  password.type = visible ? "text" : "password";
+  $("togglePassword").textContent = visible ? "🙈" : "👁️";
+};
 $("reset").onclick = async () => {
   const email = $("email").value.trim();
 
