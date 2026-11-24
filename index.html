@@ -77,15 +77,20 @@ body.theme-blue {
 </style>
 </head>
 <body>
-<button type="button" onclick="document.getElementById('themePanel').style.display='block'">
-  🎨 Choose Theme
-</button>
-<div id="themePanel" style="display:none">
-  <h3>Choose Your Theme</h3>
-  <button onclick="setTheme('dark')">Dark</button>
-  <button onclick="setTheme('purple')">Purple</button>
-  <button onclick="setTheme('pink')">Pink</button>
-  <button onclick="setTheme('blue')">Blue</button>
+<div style="width:100%;margin-bottom:12px">
+  <button type="button"
+    onclick="document.getElementById('themePanel').style.display =
+    document.getElementById('themePanel').style.display === 'none' ? 'block' : 'none'">
+    🎨 Choose Theme
+  </button>
+
+  <div id="themePanel" style="display:none">
+    <h3>Choose Your Theme</h3>
+    <button type="button" onclick="setTheme('dark')">Dark</button>
+    <button type="button" onclick="setTheme('purple')">Purple</button>
+    <button type="button" onclick="setTheme('pink')">Pink</button>
+    <button type="button" onclick="setTheme('blue')">Blue</button>
+  </div>
 </div>
 <div class="card">
  <div id="login">
