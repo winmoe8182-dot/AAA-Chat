@@ -123,9 +123,17 @@ $("google").onclick=async()=>{
  }catch(e){$("status").textContent=e.message}
 };
 
-getRedirectResult(auth).catch(error=>{
- $("status").textContent = "Google Login Error: " + error.message;
-});
+getRedirectResult(auth)
+ .then(result=>{
+  if(result && result.user){
+   $("status").textContent =
+    "Google Login Success: " + result.user.email;
+  }
+ })
+ .catch(error=>{
+  $("status").textContent =
+   "Google Login Error: " + error.code + " / " + error.message;
+ });
 
 onAuthStateChanged(auth,async user=>{
  currentUser=user;
