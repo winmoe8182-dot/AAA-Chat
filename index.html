@@ -462,15 +462,37 @@ body.theme-blue {
     </button>
   </div>
 
-  <div id="phoneLogin">
-    <input id="phoneNumber" type="tel"
-      placeholder="📱 Phone Number">
-    <input id="phonePassword" type="password"
-      placeholder="Password">
-    <p class="login-note">
-      Phone Login ကို နောက်ပိုင်း Firebase OTP စနစ်နဲ့ ချိတ်ဆက်မယ်။
-    </p>
+  
+<div id="phoneLogin">
+
+  <input id="phoneNumber" type="tel"
+    placeholder="📱 ဖုန်းနံပါတ် (+95...)">
+
+  <div id="recaptcha-container"></div>
+
+  <button type="button" id="sendOtp">
+    OTP ကုဒ်ပို့မယ်
+  </button>
+
+  <div id="otpSection" style="display:none">
+
+    <input id="otpCode" type="text"
+      inputmode="numeric"
+      maxlength="6"
+      placeholder="၆ လုံးပါ OTP ကုဒ်ထည့်ပါ">
+
+    <p id="otpTimer">OTP ပြန်ပို့ရန် 60 စက္ကန့်</p>
+
+    <button type="button" id="verifyOtp">
+      အတည်ပြုမယ်
+    </button>
+
+    <button type="button" id="resendOtp" disabled>
+      OTP ပြန်ပို့မယ်
+    </button>
+
   </div>
+</div>
 
   <div id="emailLogin" style="display:none">
     <input id="email" type="email"
@@ -525,7 +547,8 @@ import {initializeApp} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-
 import {
   getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,
  createUserWithEmailAndPassword,signInWithEmailAndPassword,
- onAuthStateChanged,signOut,sendPasswordResetEmail
+  onAuthStateChanged,signOut,sendPasswordResetEmail,
+ RecaptchaVerifier,signInWithPhoneNumber
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import {
  getFirestore,doc,setDoc,getDoc,collection,addDoc,
@@ -591,6 +614,128 @@ $("reset").onclick = async () => {
   } catch (error) {
     $("status").textContent =
       "Error: " + error.code;
+  }
+};
+// PHONE OTP LOGIN
+let confirmationResult = null;
+let recaptchaVerifier = null;
+let otpTimer = null;
+
+function setupRecaptcha() {
+  if (recaptchaVerifier) return recaptchaVerifier;
+
+  recaptchaVerifier = new RecaptchaVerifier(
+    auth,
+    "recaptcha-container",
+    {
+      size: "normal",
+      callback: () => {
+        $("status").textContent = "အတည်ပြုမှု အောင်မြင်ပါပြီ။";
+      },
+      "expired-callback": () => {
+        $("status").textContent =
+          "reCAPTCHA သက်တမ်းကုန်သွားပါပြီ။ ပြန်စမ်းပါ။";
+      }
+    }
+  );
+
+  return recaptchaVerifier;
+}
+
+$("sendOtp").onclick = async () => {
+  try {
+    const phone = $("phoneNumber").value.trim();
+
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+      throw new Error("နိုင်ငံကုဒ်နဲ့ ဖုန်းနံပါတ်ထည့်ပါ။ ဥပမာ +959...");
+    }
+
+    $("sendOtp").disabled = true;
+
+    const verifier = setupRecaptcha();
+
+    confirmationResult =
+      await signInWithPhoneNumber(auth, phone, verifier);
+
+    $("otpSection").style.display = "block";
+startOtpTimer();
+    $("status").textContent = "OTP ကုဒ် ပို့ပြီးပါပြီ။ SMS ကို စစ်ဆေးပါ။";
+
+  } catch (error) {
+    $("status").textContent =
+      "OTP Error: " + error.code + " / " + error.message;
+
+    $("sendOtp").disabled = false;
+  }
+};
+
+$("verifyOtp").onclick = async () => {
+  try {
+    if (!confirmationResult) {
+      throw new Error("အရင်ဆုံး OTP ကုဒ်တောင်းပါ။");
+    }
+
+    const code = $("otpCode").value.trim();
+
+    if (!/^\d{6}$/.test(code)) {
+      throw new Error("OTP ၆ လုံး ထည့်ပါ။");
+    }
+
+    await confirmationResult.confirm(code);
+
+    $("status").textContent = "Phone Login အောင်မြင်ပါပြီ။";
+
+  } catch (error) {
+    $("status").textContent =
+      "OTP Error: " + error.code + " / " + error.message;
+  }
+};
+// OTP RESEND TIMER
+function startOtpTimer() {
+  let seconds = 60;
+
+  $("resendOtp").disabled = true;
+  $("otpTimer").textContent = "OTP ပြန်ပို့ရန် " + seconds + " စက္ကန့်";
+
+  clearInterval(otpTimer);
+
+  otpTimer = setInterval(() => {
+    seconds--;
+
+    $("otpTimer").textContent =
+      "OTP ပြန်ပို့ရန် " + seconds + " စက္ကန့်";
+
+    if (seconds <= 0) {
+      clearInterval(otpTimer);
+      $("resendOtp").disabled = false;
+      $("otpTimer").textContent = "OTP ပြန်ပို့နိုင်ပါပြီ။";
+    }
+  }, 1000);
+}
+
+$("resendOtp").onclick = async () => {
+  try {
+    $("resendOtp").disabled = true;
+
+    if (recaptchaVerifier) {
+      recaptchaVerifier.clear();
+      recaptchaVerifier = null;
+    }
+
+    const phone = $("phoneNumber").value.trim();
+    const verifier = setupRecaptcha();
+
+    confirmationResult =
+      await signInWithPhoneNumber(auth, phone, verifier);
+
+    $("status").textContent = "OTP အသစ် ပို့ပြီးပါပြီ။";
+    startOtpTimer();
+
+  } catch (error) {
+    $("status").textContent =
+      "OTP Error: " + error.code + " / " + error.message;
+
+    $("resendOtp").disabled = false;
   }
 };
 let currentUser=null;
