@@ -1291,13 +1291,14 @@ onAuthStateChanged(auth,async user=>{
  currentUser=user;
 
  if(!user){
-  $("login").style.display="block";
+  document.querySelector(".card").style.display="flex";
+  $("login").style.display="flex";
   $("app").style.display="none";
   if(stopMessages) stopMessages();
   return;
  }
 
- $("login").style.display="none";
+ document.querySelector(".card").style.display="none";
  $("app").style.display="block";
 
  $("profileEmail").textContent = user.email || "";
