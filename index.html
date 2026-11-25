@@ -582,6 +582,228 @@ body.theme-dark #darkVideo {
 }
 .login-subtitle {
   transform: translateY(-10px);
+}/* RAKHINE CHAT MAIN APP */
+#app {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #08080d;
+  color: white;
+  padding-bottom: 85px;
+  box-sizing: border-box;
+}
+
+.app-header {
+  height: 68px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #08080d;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.app-brand img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.header-actions {
+  display: flex;
+  gap: 18px;
+  font-size: 24px;
+}
+
+.header-actions button {
+  width: auto;
+  padding: 4px;
+  margin: 0;
+  background: transparent;
+  color: white;
+  font-size: 23px;
+}
+
+.app-page {
+  display: none;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.app-page.active {
+  display: block;
+}
+
+.home-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.home-tabs button {
+  flex: 1;
+  border-radius: 30px;
+  background: #20202b;
+  color: white;
+  padding: 12px 5px;
+}
+
+.home-tabs button.active {
+  background: #812cff;
+  color: white;
+}
+
+.demo-video {
+  width: 100%;
+  height: 62vh;
+  min-height: 360px;
+  max-height: 650px;
+  border-radius: 14px;
+  background: linear-gradient(160deg,#34305a,#111,#42234e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 55px;
+}
+
+.user-card,
+.chat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  margin: 10px 0;
+  border-radius: 13px;
+  background: #191923;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #6734b9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-info strong {
+  display: block;
+  font-size: 15px;
+}
+
+.user-info small {
+  color: #aaa;
+}
+
+.purple-button {
+  width: auto;
+  padding: 10px 16px;
+  border-radius: 25px;
+  background: #812cff;
+  color: white;
+}
+
+.create-panel {
+  padding: 30px 15px;
+  border: 1px dashed #8144d9;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.create-panel button {
+  background: #812cff;
+  color: white;
+  border-radius: 25px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 76px;
+  padding: 6px 4px env(safe-area-inset-bottom);
+  background: #09090f;
+  border-top: 1px solid #292936;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  padding: 5px 0;
+}
+
+.nav-item .nav-icon {
+  font-size: 23px;
+  line-height: 27px;
+}
+
+.nav-item.active {
+  color: #a64cff;
+}
+
+.nav-item.create-nav .nav-icon {
+  background: #812cff;
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+#app input {
+  background: #20202b;
+  color: white;
+  border: 1px solid #444;
+}
+
+@media (max-width: 380px) {
+  .app-brand {
+    font-size: 15px;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .nav-item {
+    font-size: 10px;
+  }
 }
 </style>
 </head>
@@ -694,15 +916,104 @@ body.theme-dark #darkVideo {
 <p id="status"></p>
 
  </div>
- <div id="chat">
-  <h2>AAA Chat</h2>
-  <p id="welcome"></p>
-  <div id="messages" style="text-align:left;max-height:300px;overflow:auto"></div>
-  <input id="message" placeholder="စာရေးပါ...">
-  <button id="send">ပို့မယ်</button>
-  <button id="logout">အကောင့်ထွက်မယ်</button>
-  <p id="chatStatus"></p>
- </div>
+ <div id="app">
+
+  <!-- HEADER -->
+  <div class="app-header">
+    <div class="app-brand">
+      <img src="https://raw.githubusercontent.com/winmoe8182-dot/AAA-Chat/b0413efa056094e4384a68aae340f0e0dee35d53/InShot_20261125_193101544.png">
+      RAKHINE CHAT
+    </div>
+
+    <div class="header-actions">
+      <button type="button" id="searchButton">🔍</button>
+      <button type="button" id="notificationButton">🔔</button>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <section id="homePage" class="app-page active">
+    <div class="home-tabs">
+      <button class="active" type="button" data-home-tab="forYou">🔥 For You</button>
+      <button type="button" data-home-tab="following">👥 Following</button>
+    </div>
+
+    <div class="demo-video">▶️</div>
+    <h3>RAKHINE CHAT Video</h3>
+    <p>Short Video တွေ ဒီနေရာမှာ ပေါ်လာမယ်။</p>
+    <p>❤️ Like　 💬 Comment　 🔖 Favorite　 ↗️ Share</p>
+  </section>
+
+  <!-- FRIENDS -->
+  <section id="friendsPage" class="app-page">
+    <h2>👥 Friends</h2>
+    <p>နှစ်ဖက်စလုံး Friend ဖြစ်ပြီးသားသူတွေရဲ့ Video တွေ ဒီမှာပေါ်မယ်။</p>
+    <div id="friendsList"></div>
+  </section>
+
+  <!-- CREATE -->
+  <section id="createPage" class="app-page">
+    <h2>➕ Create Video</h2>
+    <div class="create-panel">
+      <div style="font-size:55px">🎬</div>
+      <h3>Short Video တင်မယ်</h3>
+      <input id="videoFile" type="file" accept="video/*">
+      <input id="videoCaption" type="text" placeholder="Caption ရေးပါ...">
+      <button type="button" id="selectVideo">Video ရွေးမယ်</button>
+      <p id="videoStatus"></p>
+    </div>
+  </section>
+
+  <!-- CHAT -->
+  <section id="chatPage" class="app-page">
+    <h2>💬 Chat</h2>
+    <div id="messages" style="text-align:left;max-height:45vh;overflow:auto"></div>
+    <input id="message" placeholder="စာရေးပါ...">
+    <button id="send">ပို့မယ်</button>
+    <p id="chatStatus"></p>
+    <button id="logout">အကောင့်ထွက်မယ်</button>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="profilePage" class="app-page">
+    <h2>👤 My Profile</h2>
+    <div style="text-align:center;padding:20px">
+      <div class="user-avatar" style="width:85px;height:85px;margin:auto">👤</div>
+      <h3 id="profileName">User</h3>
+      <p id="profileEmail"></p>
+      <p>Videos　0　 |　 Followers　0　 |　 Following　0</p>
+    </div>
+  </section>
+
+  <!-- BOTTOM MENU -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="homePage">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </button>
+
+    <button class="nav-item" data-page="friendsPage">
+      <span class="nav-icon">👥</span>
+      <span>Friends</span>
+    </button>
+
+    <button class="nav-item create-nav" data-page="createPage">
+      <span class="nav-icon">+</span>
+      <span>Create</span>
+    </button>
+
+    <button class="nav-item" data-page="chatPage">
+      <span class="nav-icon">💬</span>
+      <span>Chat</span>
+    </button>
+
+    <button class="nav-item" data-page="profilePage">
+      <span class="nav-icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+</div>
 </div>
 
 <script type="module">
@@ -734,6 +1045,46 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=id=>document.getElementById(id);
+// PAGE NAVIGATION
+document.querySelectorAll(".nav-item").forEach(button => {
+  button.onclick = () => {
+    const page = button.dataset.page;
+
+    document.querySelectorAll(".app-page").forEach(section => {
+      section.classList.remove("active");
+    });
+
+    $(page).classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+  };
+});
+
+// HOME TABS
+document.querySelectorAll("[data-home-tab]").forEach(button => {
+  button.onclick = () => {
+    document.querySelectorAll("[data-home-tab]").forEach(item => {
+      item.classList.remove("active");
+    });
+    button.classList.add("active");
+  };
+});
+
+// VIDEO PICKER
+$("selectVideo").onclick = () => {
+  $("videoFile").click();
+};
+
+$("videoFile").onchange = () => {
+  const file = $("videoFile").files[0];
+  $("videoStatus").textContent = file
+    ? "ရွေးထားသော Video: " + file.name
+    : "";
+};
 
 $("phoneTab").onclick = () => {
   $("phoneLogin").style.display = "block";
@@ -949,12 +1300,17 @@ onAuthStateChanged(auth,async user=>{
 
  if(!user){
   $("login").style.display="block";
-  $("chat").style.display="none";
+  $("app").style.display="none";
   if(stopMessages) stopMessages();
   return;
  }
  $("login").style.display="none";
- $("chat").style.display="block";
+$("app").style.display="block";
+
+$("profileName").textContent =
+  user.displayName || "User";
+
+$("profileEmail").textContent = user.email || "";
  let profile=await getDoc(doc(db,"users",user.uid));
  if(!profile.exists() && user.displayName){
   await setDoc(doc(db,"users",user.uid),{
