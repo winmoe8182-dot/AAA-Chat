@@ -1290,29 +1290,31 @@ getRedirectResult(auth)
 onAuthStateChanged(auth,async user=>{
  currentUser=user;
 
-
  if(!user){
   $("login").style.display="block";
   $("app").style.display="none";
   if(stopMessages) stopMessages();
   return;
  }
+
  $("login").style.display="none";
-$("app").style.display="block";
+ $("app").style.display="block";
 
-$("profileName").textContent =
-  user.displayName || "User";
+ $("profileEmail").textContent = user.email || "";
 
-$("profileEmail").textContent = user.email || "";
  let profile=await getDoc(doc(db,"users",user.uid));
+
  if(!profile.exists() && user.displayName){
   await setDoc(doc(db,"users",user.uid),{
-   nickname:user.displayName,createdAt:serverTimestamp()
+   nickname:user.displayName,
+   createdAt:serverTimestamp()
   });
   profile=await getDoc(doc(db,"users",user.uid));
  }
+
  $("profileName").textContent =
   profile.data()?.nickname || user.displayName || "User";
+
  loadMessages();
 });
 
