@@ -955,6 +955,17 @@ body.theme-dark #darkVideo {
       <h3>Short Video တင်မယ်</h3>
       <input id="videoFile" type="file" accept="video/*">
       <input id="videoCaption" type="text" placeholder="Caption ရေးပါ...">
+
+<button type="button" id="selectVideo">
+  Video ရွေးမယ်
+</button>
+
+<button type="button" id="uploadVideo">
+  Video တင်မယ်
+</button>
+
+<p id="videoStatus"></p>
+
       <button type="button" id="selectVideo">Video ရွေးမယ်</button>
       <p id="videoStatus"></p>
     </div>
@@ -1080,6 +1091,47 @@ $("videoFile").onchange = () => {
     ? "ရွေးထားသော Video: " + file.name
     : "";
 };
+// UPLOAD VIDEO AND SAVE TO FIRESTORE
+$("uploadVideo").onclick = async () => {
+  try {
+    if (!currentUser) {
+      throw new Error("အရင် Login ဝင်ပါ။");
+    }
+
+    const file = $("videoFile").files[0];
+    const caption = $("videoCaption").value.trim();
+
+    if (!file) {
+      throw new Error("Video ရွေးချယ်ပါ။");
+    }
+
+    $("uploadVideo").disabled = true;
+
+    const uploaded = await uploadVideoToImageKit(file);
+
+    const profile = await getDoc(
+      doc(db, "users", currentUser.uid)
+    );
+
+    await addDoc(collection(db, "videos"), {
+      uid: currentUser.uid,
+      nickname: profile.data()?.nickname || "User",
+      videoUrl: uploaded.url,
+      caption: caption,
+      createdAt: serverTimestamp()
+    });
+
+    $("videoStatus").textContent = "Video တင်ပြီးပါပြီ။";
+    $("videoFile").value = "";
+    $("videoCaption").value = "";
+
+  } catch (error) {
+    $("videoStatus").textContent = "Upload Error: " + error.message;
+  } finally {
+    $("uploadVideo").disabled = false;
+  }
+};
+
 // IMAGEKIT VIDEO UPLOAD
 const WORKER_URL =
   "https://throbbing-glade-3fab.soe214739.workers.dev";
@@ -1310,6 +1362,47 @@ $("resendOtp").onclick = async () => {
 };
 let currentUser=null;
 let stopMessages=null;
+
+ // UPLOAD VIDEO AND SAVE TO FIRESTORE
+$("uploadVideo").onclick = async () => {
+  try {
+    if (!currentUser) {
+      throw new Error("အရင် Login ဝင်ပါ။");
+    }
+
+    const file = $("videoFile").files[0];
+    const caption = $("videoCaption").value.trim();
+
+    if (!file) {
+      throw new Error("Video ရွေးချယ်ပါ။");
+    }
+
+    $("uploadVideo").disabled = true;
+
+    const uploaded = await uploadVideoToImageKit(file);
+
+    const profile = await getDoc(
+      doc(db, "users", currentUser.uid)
+    );
+
+    await addDoc(collection(db, "videos"), {
+      uid: currentUser.uid,
+      nickname: profile.data()?.nickname || "User",
+      videoUrl: uploaded.url,
+      caption: caption,
+      createdAt: serverTimestamp()
+    });
+
+    $("videoStatus").textContent = "Video တင်ပြီးပါပြီ။";
+    $("videoFile").value = "";
+    $("videoCaption").value = "";
+
+  } catch (error) {
+    $("videoStatus").textContent = "Upload Error: " + error.message;
+  } finally {
+    $("uploadVideo").disabled = false;
+  }
+};
 
 $("signup").onclick=async()=>{
  try{
