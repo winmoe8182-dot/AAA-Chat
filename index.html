@@ -1080,6 +1080,67 @@ $("videoFile").onchange = () => {
     ? "ရွေးထားသော Video: " + file.name
     : "";
 };
+// IMAGEKIT VIDEO UPLOAD
+const WORKER_URL =
+  "https://throbbing-glade-3fab.soe214739.workers.dev";
+
+const IMAGEKIT_UPLOAD_URL =
+  "https://upload.imagekit.io/api/v1/files/upload";
+
+async function uploadVideoToImageKit(file) {
+  if (!file) throw new Error("Video ရွေးချယ်ပါ။");
+
+  if (!file.type.startsWith("video/")) {
+    throw new Error("Video ဖိုင်ကိုသာ ရွေးချယ်ပါ။");
+  }
+
+  $("videoStatus").textContent = "Upload ပြင်ဆင်နေပါသည်...";
+
+  // Worker မှ Upload Authentication ရယူခြင်း
+  const authResponse = await fetch(WORKER_URL);
+
+  if (!authResponse.ok) {
+    throw new Error("Worker Authentication မရပါ။");
+  }
+
+  const authData = await authResponse.json();
+
+  if (
+    !authData.token ||
+    !authData.signature ||
+    !authData.expire ||
+    !authData.publicKey
+  ) {
+    throw new Error("Worker မှ Authentication အချက်အလက် မပြည့်စုံပါ။");
+  }
+
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("fileName", file.name);
+  formData.append("publicKey", authData.publicKey);
+  formData.append("token", authData.token);
+  formData.append("signature", authData.signature);
+  formData.append("expire", authData.expire);
+
+  $("videoStatus").textContent = "Video Upload လုပ်နေပါသည်...";
+
+  const uploadResponse = await fetch(IMAGEKIT_UPLOAD_URL, {
+    method: "POST",
+    body: formData
+  });
+
+  const result = await uploadResponse.json();
+
+  if (!uploadResponse.ok || !result.url) {
+    throw new Error(
+      result.message || "Video Upload မအောင်မြင်ပါ။"
+    );
+  }
+
+  return result;
+}
+
 
 $("phoneTab").onclick = () => {
   $("phoneLogin").style.display = "block";
