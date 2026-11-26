@@ -934,6 +934,9 @@ body.theme-dark #darkVideo {
       <button type="button" data-home-tab="following">👥 Following</button>
     </div>
 
+<div id="videosFeed"></div>
+
+
     <div class="demo-video">▶️</div>
     <h3>RAKHINE CHAT Video</h3>
     <p>Short Video တွေ ဒီနေရာမှာ ပေါ်လာမယ်။</p>
@@ -1130,7 +1133,49 @@ $("uploadVideo").onclick = async () => {
   } finally {
     $("uploadVideo").disabled = false;
   }
-};
+};// DISPLAY VIDEOS ON HOME
+const videosQuery = query(
+  collection(db, "videos"),
+  orderBy("createdAt", "desc")
+);
+
+onSnapshot(videosQuery, snapshot => {
+  const feed = $("videosFeed");
+  feed.innerHTML = "";
+
+  if (snapshot.empty) {
+    feed.textContent = "Video မရှိသေးပါ။";
+    return;
+  }
+
+  snapshot.forEach(item => {
+    const data = item.data();
+
+    const card = document.createElement("div");
+    card.style.margin = "14px 0";
+    card.style.padding = "12px";
+    card.style.background = "#191919";
+    card.style.borderRadius = "12px";
+
+    const name = document.createElement("strong");
+    name.textContent = data.nickname || "User";
+
+    const video = document.createElement("video");
+    video.src = data.videoUrl;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "metadata";
+    video.style.width = "100%";
+    video.style.maxHeight = "70vh";
+    video.style.borderRadius = "10px";
+
+    const caption = document.createElement("p");
+    caption.textContent = data.caption || "";
+
+    card.append(name, video, caption);
+    feed.appendChild(card);
+  });
+});
 
 // IMAGEKIT VIDEO UPLOAD
 const WORKER_URL =
