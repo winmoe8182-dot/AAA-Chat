@@ -932,8 +932,15 @@ body.theme-dark #darkVideo {
     <div class="home-tabs">
       <button class="active" type="button" data-home-tab="forYou">🔥 For You</button>
       <button type="button" data-home-tab="following">👥 Following</button>
+<button type="button" id="homeSearchToggle">🔍</button>
     </div>
-
+<div id="homeSearchBox" style="display:none;">
+  <input
+    type="search"
+    id="homeSearchInput"
+    placeholder="Video ရှာဖွေပါ..."
+  >
+</div>
 <div id="videosFeed"></div>
 
 
@@ -1082,7 +1089,42 @@ document.querySelectorAll("[data-home-tab]").forEach(button => {
     button.classList.add("active");
   };
 });
+// HOME VIDEO SEARCH
+$("homeSearchToggle").onclick = () => {
+  const box = $("homeSearchBox");
 
+  if (box.style.display === "none") {
+    box.style.display = "block";
+    $("homeSearchInput").focus();
+  } else {
+    box.style.display = "none";
+    $("homeSearchInput").value = "";
+    filterHomeVideos("");
+  }
+};
+
+function filterHomeVideos(value) {
+  const keyword = value.trim().toLowerCase();
+
+  Array.from($("videosFeed").children).forEach(card => {
+    card.style.display =
+      card.textContent.toLowerCase().includes(keyword)
+        ? ""
+        : "none";
+  });
+}
+
+$("homeSearchInput").addEventListener("input", event => {
+  filterHomeVideos(event.target.value);
+});
+
+const homeVideoObserver = new MutationObserver(() => {
+  filterHomeVideos($("homeSearchInput").value);
+});
+
+homeVideoObserver.observe($("videosFeed"), {
+  childList: true
+});
 // VIDEO PICKER
 $("selectVideo").onclick = () => {
   $("videoFile").click();
