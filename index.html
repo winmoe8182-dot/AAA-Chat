@@ -1315,7 +1315,30 @@ $("uploadVideo").onclick = async () => {
     $("videoStatus").textContent = "Upload Error: " + error.message;
   } finally {
     $("uploadVideo").disabled = false;
-  }
+  }// HOME VIDEO AUTO PLAY
+const homeVideoObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const video = entry.target;
+
+    if (
+      entry.isIntersecting &&
+      entry.intersectionRatio >= 0.6 &&
+      $("homePage").classList.contains("active")
+    ) {
+      document.querySelectorAll(".video-post-player").forEach(other => {
+        if (other !== video) {
+          other.pause();
+        }
+      });
+
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  });
+}, {
+  threshold: [0, 0.6, 1]
+});
 };// DISPLAY VIDEOS ON HOME
 const videosQuery = query(
   collection(db, "videos"),
