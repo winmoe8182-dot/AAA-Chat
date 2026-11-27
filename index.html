@@ -1363,6 +1363,9 @@ onSnapshot(videosQuery, snapshot => {
     const video = document.createElement("video");
     video.src = data.videoUrl;
     video.playsInline = true;
+video.muted = true;
+video.autoplay = true;
+video.loop = true;
     video.preload = "metadata";
     video.className = "video-post-player";
 
@@ -1421,6 +1424,7 @@ onSnapshot(videosQuery, snapshot => {
     actions.append(like, comment, save, share);
     card.append(video, info, actions);
     feed.appendChild(card);
+homeVideoObserver.observe(video);
   });
 });
 
