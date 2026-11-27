@@ -893,7 +893,7 @@ body.theme-dark #darkVideo {
 
 .video-post-actions button.selected {
   color: #ff3b75;
-}/* HOME FULL SCREEN VIDEO LAYOUT */
+}/* HOME VIDEO SCROLL FIX */
 #homePage {
   position: relative;
   padding: 0 !important;
@@ -901,32 +901,40 @@ body.theme-dark #darkVideo {
 }
 
 #videosFeed {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: calc(100dvh - 188px);
+  min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y proximity;
   gap: 0;
 }
 
 .video-post {
   position: relative;
+  flex: 0 0 calc(100dvh - 188px);
   width: 100%;
   height: calc(100dvh - 188px);
   min-height: 0;
   margin: 0;
   padding: 0;
   border-radius: 0;
-  scroll-snap-align: start;
   overflow: hidden;
   background: #000;
+  scroll-snap-align: start;
 }
 
 .video-post-player {
+  display: block;
   width: 100%;
   height: 100%;
-  max-height: none;
-  object-fit: contain;
-  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
   background: #000;
 }
 
@@ -937,7 +945,6 @@ body.theme-dark #darkVideo {
   right: 8px;
   z-index: 10;
   margin: 0;
-  background: transparent;
 }
 
 #homeSearchBox {
@@ -947,30 +954,6 @@ body.theme-dark #darkVideo {
   right: 8px;
   width: auto;
   z-index: 10;
-}/* VIDEO SIZE AND SCROLL FIX */
-#videosFeed {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  overscroll-behavior-y: contain;
-}
-
-.video-post {
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.video-post-player {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
 }
 </style>
 </head>
