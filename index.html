@@ -1316,7 +1316,7 @@ $("uploadVideo").onclick = async () => {
   } finally {
     $("uploadVideo").disabled = false;
   }// HOME VIDEO AUTO PLAY
-const homeVideoObserver = new IntersectionObserver(entries => {
+const homePlaybackObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     const video = entry.target;
 
@@ -1424,7 +1424,7 @@ video.loop = true;
     actions.append(like, comment, save, share);
     card.append(video, info, actions);
     feed.appendChild(card);
-homeVideoObserver.observe(video);
+homePlaybackObserver.observe(video);
   });
 });
 
